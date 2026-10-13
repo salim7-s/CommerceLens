@@ -14,10 +14,21 @@ export function getDatabase(): Database.Database {
     return globalForDb.__commerceLensDb;
   }
 
-  // Store database file in data/CommerceLens.db
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+  // Store database file in data/CommerceLens.db or /tmp for serverless (Vercel)
+  let dataDir = path.join(process.cwd(), "data");
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    dataDir = path.join("/tmp", "data");
+  }
+
+  try {
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+  } catch {
+    dataDir = path.join("/tmp", "data");
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
   }
 
   const dbPath = path.join(dataDir, "CommerceLens.db");
@@ -26,7 +37,6 @@ export function getDatabase(): Database.Database {
   db.pragma("foreign_keys = ON");
 
   if (!globalForDb.__commerceLensSchemaInit) {
-    // Check if products table already exists before running DDL
     const tableExists = db
       .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='products'")
       .get();
@@ -123,5 +133,25 @@ export function initSchema(db: Database.Database): void {
       created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (run_id) REFERENCES agent_runs(id) ON DELETE CASCADE
     );
+
+    INSERT OR IGNORE INTO categories (id, name, woo_id) VALUES
+      ('cat_footwear', 'Footwear', 11),
+      ('cat_apparel', 'Apparel', 12),
+      ('cat_electronics', 'Electronics', 13);
+
+    INSERT OR IGNORE INTO attribute_templates (id, category_id, name, type, required, options_json) VALUES
+      ('tmpl_fw_size', 'cat_footwear', 'size', 'text', 1, '[]'),
+      ('tmpl_fw_color', 'cat_footwear', 'color', 'text', 1, '[]'),
+      ('tmpl_fw_material', 'cat_footwear', 'material', 'text', 1, '[]'),
+      ('tmpl_fw_gender', 'cat_footwear', 'gender', 'select', 1, '["Men","Women","Unisex"]'),
+      ('tmpl_fw_sole', 'cat_footwear', 'sole_type', 'text', 0, '[]'),
+      ('tmpl_ap_size', 'cat_apparel', 'size', 'select', 1, '["XS","S","M","L","XL","XXL"]'),
+      ('tmpl_ap_color', 'cat_apparel', 'color', 'text', 1, '[]'),
+      ('tmpl_ap_fabric', 'cat_apparel', 'fabric', 'text', 1, '[]'),
+      ('tmpl_ap_fit', 'cat_apparel', 'fit', 'select', 0, '["Slim","Regular","Relaxed"]'),
+      ('tmpl_el_brand', 'cat_electronics', 'brand', 'text', 1, '[]'),
+      ('tmpl_el_model', 'cat_electronics', 'model', 'text', 1, '[]'),
+      ('tmpl_el_warranty', 'cat_electronics', 'warranty', 'text', 1, '[]'),
+      ('tmpl_el_voltage', 'cat_electronics', 'voltage', 'text', 0, '[]');
   `);
 }

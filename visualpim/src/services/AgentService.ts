@@ -49,8 +49,12 @@ export class AgentService {
       }[];
       scanned = products.length;
 
-      // Filter products needing work or improve
-      const targetProducts = products.filter((p) => p.status !== "ready" || p.sync_status !== "synced").slice(0, 5);
+      // Filter products needing work or audit existing catalog
+      const targetProducts = (
+        products.some((p) => p.status !== "ready" || p.sync_status !== "synced")
+          ? products.filter((p) => p.status !== "ready" || p.sync_status !== "synced")
+          : products
+      ).slice(0, 5);
 
       for (const prod of targetProducts) {
         if (stepNo > 25) break; // Hard safety cap
