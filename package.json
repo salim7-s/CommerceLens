@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "npm --prefix visualpim install",
-    "dev": "npm --prefix visualpim run dev",
-    "build": "npm --prefix visualpim run build",
-    "start": "npm --prefix visualpim run start",
-    "test": "npm --prefix visualpim run test",
-    "seed": "npm --prefix visualpim run seed"
+    "postinstall": "npm --prefix CommerceLens install",
+    "dev": "npm --prefix CommerceLens run dev",
+    "build": "npm --prefix CommerceLens run build",
+    "start": "npm --prefix CommerceLens run start",
+    "test": "npm --prefix CommerceLens run test",
+    "seed": "npm --prefix CommerceLens run seed"
   }
 }

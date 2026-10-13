@@ -139,15 +139,15 @@ src/
 
 ### 1. Installation
 ```bash
-# Navigate to the visualpim application folder
-cd visualpim
+# Navigate to the CommerceLens application folder
+cd CommerceLens
 
 # Install dependencies
 npm install
 ```
 
 ### 2. Environment Configuration
-Create a `.env.local` file in `visualpim/`:
+Create a `.env.local` file in `CommerceLens/`:
 
 ```env
 # Cloudinary Credentials
