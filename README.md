@@ -13,7 +13,7 @@
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-REST%20v3-96588a?style=flat-square&logo=woocommerce)](https://woocommerce.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-[**Live Application**](http://localhost:3000) · [**Explore Catalog**](http://localhost:3000/products) · [**Video Scripts (Planning & Result)**](VIDEO_SCRIPT.md) · [**GitHub Repo**](https://github.com/salim7-s/-CommerceLens) · [**Architecture Docs**](#architecture--design-patterns)
+ [**Explore Catalog**](http://localhost:3000/products)  · [**GitHub Repo**](https://github.com/salim7-s/-CommerceLens) · [**Architecture Docs**](#architecture--design-patterns)
 
 ---
 
